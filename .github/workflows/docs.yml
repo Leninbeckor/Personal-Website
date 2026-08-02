@@ -1,0 +1,151 @@
+name: Build and deploy knowledge base
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: knowledge-base-production
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '11.9.0'
+  SITE_HOST: ${{ vars.SITE_HOST || 'https://www.example.com' }}
+  SITE_TITLE: ${{ vars.SITE_TITLE || '我的知识库' }}
+  SITE_DESCRIPTION: ${{ vars.SITE_DESCRIPTION || '持续整理、可以检索的个人知识体系' }}
+  SITE_AUTHOR: ${{ vars.SITE_AUTHOR || '知识库作者' }}
+  GITHUB_REPOSITORY_URL: https://github.com/${{ github.repository }}
+  VITE_ICP_NUMBER: ${{ vars.ICP_NUMBER }}
+  VITE_ICP_URL: https://beian.miit.gov.cn/
+  VITE_PUBLIC_SECURITY_NUMBER: ${{ vars.PUBLIC_SECURITY_NUMBER }}
+  VITE_PUBLIC_SECURITY_URL: ${{ vars.PUBLIC_SECURITY_URL }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and validate
+        run: pnpm docs:build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: docs/.vuepress/dist
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
+      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
+      COS_BUCKET: ${{ vars.COS_BUCKET }}
+      COS_REGION: ${{ vars.COS_REGION }}
+      CDN_DOMAIN: ${{ vars.CDN_DOMAIN }}
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+
+      - name: Validate deployment settings
+        shell: bash
+        run: |
+          required=(TENCENTCLOUD_SECRET_ID TENCENTCLOUD_SECRET_KEY COS_BUCKET COS_REGION CDN_DOMAIN)
+          for name in "${required[@]}"; do
+            if [ -z "${!name}" ]; then
+              echo "Missing required GitHub Secret or Variable: $name" >&2
+              exit 1
+            fi
+          done
+          if [ "$SITE_HOST" = "https://www.example.com" ]; then
+            echo "SITE_HOST still uses the example domain; deployment stopped." >&2
+            exit 1
+          fi
+
+      - name: Install verified COSCLI
+        shell: bash
+        run: |
+          curl --fail --location --silent --show-error \
+            --output "$RUNNER_TEMP/coscli" \
+            https://cosbrowser.cloud.tencent.com/software/coscli/coscli-linux-amd64
+          echo "7165f2ae16c5f7ac495864c963ca574a76e04ec72680d7bc8a8eee3234d8cf91  $RUNNER_TEMP/coscli" | sha256sum --check
+          chmod 755 "$RUNNER_TEMP/coscli"
+
+      - name: Configure COSCLI
+        shell: bash
+        run: |
+          cat > "$RUNNER_TEMP/cos.yaml" <<EOF
+          cos:
+            base:
+              secretid: ${TENCENTCLOUD_SECRET_ID}
+              secretkey: ${TENCENTCLOUD_SECRET_KEY}
+              sessiontoken: ""
+              protocol: https
+            buckets:
+              - name: ${COS_BUCKET}
+                alias: site
+                region: ${COS_REGION}
+                endpoint: cos.${COS_REGION}.myqcloud.com
+                ofs: false
+          EOF
+
+      - name: Sync site to dedicated private bucket
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/coscli" sync ./dist/ cos://site/ \
+            --recursive --delete --force --retry-num 3 \
+            --meta "Cache-Control:no-cache" \
+            --config-path "$RUNNER_TEMP/cos.yaml"
+          if [ -d ./dist/assets ]; then
+            "$RUNNER_TEMP/coscli" cp ./dist/assets/ cos://site/assets/ \
+              --recursive --force \
+              --meta "Cache-Control:public,max-age=31536000,immutable" \
+              --config-path "$RUNNER_TEMP/cos.yaml"
+          fi
+          while IFS= read -r -d '' html_file; do
+            object_key="${html_file#./dist/}"
+            "$RUNNER_TEMP/coscli" cp "$html_file" "cos://site/${object_key}" \
+              --force \
+              --meta "Cache-Control:no-cache" \
+              --config-path "$RUNNER_TEMP/cos.yaml"
+          done < <(find ./dist -type f -name '*.html' -print0)
+
+      - name: Refresh CDN cache
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check --quiet tccli
+          tccli cdn PurgePathCache \
+            --Paths "[\"https://${CDN_DOMAIN}/\"]" \
+            --FlushType flush

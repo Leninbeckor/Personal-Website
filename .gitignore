@@ -1,0 +1,20 @@
+node_modules/
+.pnpm-store/
+
+# VuePress 生成目录
+docs/.vuepress/.cache/
+docs/.vuepress/.temp/
+docs/.vuepress/dist/
+
+# 本地环境与部署工具
+.env
+.env.local
+.cos.yaml
+.tccli/
+coscli_output/
+
+# 编辑器与系统文件
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
