@@ -121,10 +121,10 @@ jobs:
                 ofs: false
           EOF
 
-      - name: Sync site to dedicated private bucket
+      - name: Upload site to dedicated private bucket
         shell: bash
         run: |
-          if ! "$RUNNER_TEMP/coscli" sync ./dist/ cos://site/ \
+          if ! "$RUNNER_TEMP/coscli" cp ./dist/ cos://site/ \
             --recursive --force --retry-num 3 \
             --meta "Cache-Control:no-cache" \
             --config-path "$RUNNER_TEMP/cos.yaml"; then
