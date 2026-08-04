@@ -124,29 +124,18 @@ jobs:
       - name: Upload site to dedicated private bucket
         shell: bash
         run: |
-          if ! "$RUNNER_TEMP/coscli" cp ./dist/ cos://site/ \
-            --recursive --force --retry-num 3 \
-            --meta "Cache-Control:no-cache" \
-            --config-path "$RUNNER_TEMP/cos.yaml"; then
-            echo "COSCLI sync failed. Detailed transfer errors:" >&2
-            if [ -d ./coscli_output ]; then
-              find ./coscli_output -type f -maxdepth 2 -print -exec sed -n '1,200p' {} \;
+          while IFS= read -r -d '' site_file; do
+            object_key="${site_file#./dist/}"
+            cache_control="Cache-Control:no-cache"
+            if [[ "$object_key" == assets/* ]]; then
+              cache_control="Cache-Control:public,max-age=31536000,immutable"
             fi
-            exit 1
-          fi
-          if [ -d ./dist/assets ]; then
-            "$RUNNER_TEMP/coscli" cp ./dist/assets/ cos://site/assets/ \
-              --recursive --force \
-              --meta "Cache-Control:public,max-age=31536000,immutable" \
+            echo "Uploading ${object_key}"
+            "$RUNNER_TEMP/coscli" cp "$site_file" "cos://site/${object_key}" \
+              --force --retry-num 3 \
+              --meta "$cache_control" \
               --config-path "$RUNNER_TEMP/cos.yaml"
-          fi
-          while IFS= read -r -d '' html_file; do
-            object_key="${html_file#./dist/}"
-            "$RUNNER_TEMP/coscli" cp "$html_file" "cos://site/${object_key}" \
-              --force \
-              --meta "Cache-Control:no-cache" \
-              --config-path "$RUNNER_TEMP/cos.yaml"
-          done < <(find ./dist -type f -name '*.html' -print0)
+          done < <(find ./dist -type f -print0)
 
       - name: Refresh CDN cache
         if: env.CDN_DOMAIN != ''
