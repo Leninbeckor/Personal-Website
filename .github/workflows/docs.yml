@@ -125,7 +125,7 @@ jobs:
         shell: bash
         run: |
           if ! "$RUNNER_TEMP/coscli" sync ./dist/ cos://site/ \
-            --recursive --delete --force --retry-num 3 \
+            --recursive --force --retry-num 3 \
             --meta "Cache-Control:no-cache" \
             --config-path "$RUNNER_TEMP/cos.yaml"; then
             echo "COSCLI sync failed. Detailed transfer errors:" >&2
