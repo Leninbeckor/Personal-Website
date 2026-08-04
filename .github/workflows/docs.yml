@@ -124,10 +124,16 @@ jobs:
       - name: Sync site to dedicated private bucket
         shell: bash
         run: |
-          "$RUNNER_TEMP/coscli" sync ./dist/ cos://site/ \
+          if ! "$RUNNER_TEMP/coscli" sync ./dist/ cos://site/ \
             --recursive --delete --force --retry-num 3 \
             --meta "Cache-Control:no-cache" \
-            --config-path "$RUNNER_TEMP/cos.yaml"
+            --config-path "$RUNNER_TEMP/cos.yaml"; then
+            echo "COSCLI sync failed. Detailed transfer errors:" >&2
+            if [ -d ./coscli_output ]; then
+              find ./coscli_output -type f -maxdepth 2 -print -exec sed -n '1,200p' {} \;
+            fi
+            exit 1
+          fi
           if [ -d ./dist/assets ]; then
             "$RUNNER_TEMP/coscli" cp ./dist/assets/ cos://site/assets/ \
               --recursive --force \
