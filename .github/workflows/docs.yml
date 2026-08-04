@@ -132,7 +132,7 @@ jobs:
             fi
             echo "Uploading ${object_key}"
             "$RUNNER_TEMP/coscli" cp "$site_file" "cos://site/${object_key}" \
-              --force --retry-num 3 \
+              --retry-num 3 \
               --meta "$cache_control" \
               --config-path "$RUNNER_TEMP/cos.yaml"
           done < <(find ./dist -type f -print0)
