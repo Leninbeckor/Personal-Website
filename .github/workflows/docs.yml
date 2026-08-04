@@ -82,7 +82,7 @@ jobs:
       - name: Validate deployment settings
         shell: bash
         run: |
-          required=(TENCENTCLOUD_SECRET_ID TENCENTCLOUD_SECRET_KEY COS_BUCKET COS_REGION CDN_DOMAIN)
+          required=(TENCENTCLOUD_SECRET_ID TENCENTCLOUD_SECRET_KEY COS_BUCKET COS_REGION)
           for name in "${required[@]}"; do
             if [ -z "${!name}" ]; then
               echo "Missing required GitHub Secret or Variable: $name" >&2
@@ -143,6 +143,7 @@ jobs:
           done < <(find ./dist -type f -name '*.html' -print0)
 
       - name: Refresh CDN cache
+        if: env.CDN_DOMAIN != ''
         shell: bash
         run: |
           python -m pip install --disable-pip-version-check --quiet tccli
