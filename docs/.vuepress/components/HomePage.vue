@@ -1,9 +1,37 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import SiteFooter from './SiteFooter.vue'
+
+type RegulationPreviewItem = {
+  id: string
+  name: string
+  publishedAt: string | null
+  authority: string
+  officialUrl: string | null
+}
+
+const regulationCount = ref(629)
+const verifiedLinkCount = ref(4)
+const regulationPreviewItems = ref<RegulationPreviewItem[]>([])
+
+onMounted(async () => {
+  try {
+    const response = await fetch('/data/regulations-2025.json')
+    if (!response.ok) return
+    const payload = await response.json()
+    regulationCount.value = payload.recordCount
+    verifiedLinkCount.value = payload.verifiedLinkCount
+    regulationPreviewItems.value = payload.records
+      .filter((item: RegulationPreviewItem) => item.officialUrl)
+      .slice(0, 2)
+  } catch {
+    // Keep the compact fallback totals when the static data file is unavailable.
+  }
+})
 
 const modules = [
   {
-    index: '01',
+    index: '02',
     title: '自动化办公',
     description: '沉淀可复用的工作方法、自动化流程与效率提升实践。',
     link: '/office-automation/',
@@ -11,7 +39,7 @@ const modules = [
     icon: 'automation',
   },
   {
-    index: '02',
+    index: '03',
     title: '投资实战分析',
     description: '记录投资研究、分析框架、决策依据与真实复盘。',
     link: '/investment-analysis/',
@@ -19,7 +47,7 @@ const modules = [
     icon: 'investment',
   },
   {
-    index: '03',
+    index: '04',
     title: '会计准则区分及影响',
     description: '比较主要会计准则的处理差异，以及对财务报表和决策的影响。',
     link: '/accounting-standards/',
@@ -27,7 +55,7 @@ const modules = [
     icon: 'accounting',
   },
   {
-    index: '04',
+    index: '05',
     title: 'DSH 开发实践',
     description: '实时记录项目进度、工程实践、版本变化与开发心得。',
     link: '/ai-finance/',
@@ -40,6 +68,40 @@ const modules = [
 <template>
   <main class="vp-home custom-home">
     <div class="home-layout">
+      <a href="/regulations/" class="module-card regulation-preview-card home-regulations-mini" aria-label="进入上市公司法规库">
+        <div class="module-card__meta">
+          <span>法规库</span>
+          <span>官方原文入口</span>
+        </div>
+        <div class="regulation-preview__header">
+          <div class="module-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <path d="M8 5h16v22H8zM12 10h8M12 15h8M12 20h5" />
+            </svg>
+          </div>
+          <div>
+            <h3>上市公司法规库</h3>
+            <p>监管规则与官方原文入口</p>
+          </div>
+        </div>
+        <div class="regulation-preview__search"><span aria-hidden="true">⌕</span> 搜索法规名称或文号</div>
+        <div class="regulation-preview__stats">
+          <span><strong>{{ regulationCount }}</strong> 条法规</span>
+          <span><strong>{{ verifiedLinkCount }}</strong> 条原文直达</span>
+        </div>
+        <div class="regulation-preview__rows" aria-hidden="true">
+          <div v-for="item in regulationPreviewItems" :key="item.id">
+            <span>{{ item.authority }}</span>
+            <p>{{ item.name }}</p>
+            <time>{{ item.publishedAt }}</time>
+          </div>
+          <div v-if="regulationPreviewItems.length === 0" class="regulation-preview__placeholder">
+            <span>证监会</span><p>上市公司信息披露管理办法</p><time>2025</time>
+          </div>
+        </div>
+        <span class="module-card__link">进入法规库 <i aria-hidden="true">→</i></span>
+      </a>
+
       <section class="home-intro" aria-labelledby="home-title">
         <p class="home-eyebrow"><span aria-hidden="true"></span> PERSONAL KNOWLEDGE BASE</p>
         <h1 id="home-title">知识导航，<br /><em>万事通达</em></h1>

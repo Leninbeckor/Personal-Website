@@ -268,10 +268,10 @@ html[data-theme='dark'] .custom-home {
 .home-layout {
   display: grid;
   grid-template-areas:
-    'intro author'
-    'modules author';
-  grid-template-columns: minmax(0, 1fr) clamp(330px, 22vw, 360px);
-  gap: 0 1.5rem;
+    'regulations intro author'
+    'regulations modules author';
+  grid-template-columns: clamp(220px, 18vw, 250px) minmax(0, 1fr) clamp(310px, 22vw, 350px);
+  gap: 0 1.25rem;
   align-items: start;
 }
 
@@ -641,6 +641,130 @@ html[data-theme='dark'] .custom-home {
   transform: translateX(4px);
 }
 
+.regulation-preview-card {
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--vp-c-accent-soft) 58%, transparent), transparent 48%),
+    var(--vp-c-bg-elv);
+}
+
+.home-regulations-mini {
+  grid-area: regulations;
+  min-height: 31rem;
+  padding: 1.25rem;
+}
+
+.home-regulations-mini .module-card__link {
+  left: 1.25rem;
+}
+
+.regulation-preview-card::after {
+  right: -5rem;
+  bottom: -6rem;
+}
+
+.regulation-preview__header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 1.15rem;
+}
+
+.regulation-preview__header .module-card__icon {
+  width: 2.7rem;
+  height: 2.7rem;
+  flex: 0 0 2.7rem;
+  margin-top: 0;
+}
+
+.regulation-preview__header h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.regulation-preview__header p {
+  max-width: none;
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.regulation-preview__search {
+  margin-top: 1rem;
+  padding: 0.48rem 0.65rem;
+  border: 1px solid var(--home-line);
+  border-radius: 8px;
+  color: var(--home-muted);
+  background: color-mix(in srgb, var(--vp-c-bg) 75%, transparent);
+  font-size: 0.7rem;
+}
+
+.regulation-preview__search span {
+  margin-right: 0.35rem;
+  color: var(--vp-c-accent);
+  font-size: 0.9rem;
+}
+
+.regulation-preview__stats {
+  display: flex;
+  gap: 0.55rem;
+  margin-top: 0.7rem;
+}
+
+.regulation-preview__stats span {
+  flex: 1;
+  padding: 0.42rem 0.5rem;
+  border-radius: 7px;
+  color: var(--home-muted);
+  background: var(--vp-c-accent-soft);
+  font-size: 0.66rem;
+  line-height: 1.45;
+}
+
+.regulation-preview__stats strong {
+  color: var(--vp-c-accent);
+  font-size: 0.86rem;
+}
+
+.regulation-preview__rows {
+  margin-top: 0.7rem;
+  padding-bottom: 2.4rem;
+}
+
+.regulation-preview__rows > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--home-line);
+}
+
+.regulation-preview__rows span,
+.regulation-preview__rows time {
+  color: var(--home-muted);
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.regulation-preview__rows span {
+  padding: 0.08rem 0.28rem;
+  border-radius: 4px;
+  color: var(--vp-c-accent);
+  background: var(--vp-c-accent-soft);
+}
+
+.regulation-preview__rows p {
+  display: -webkit-box;
+  max-width: none;
+  margin: 0;
+  overflow: hidden;
+  color: var(--home-ink);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
 /* Article cards and reading rhythm, adapted from Butterfly post layout. */
 :is(.theme-default-content, .vp-page [vp-content]) {
   margin-top: 2rem;
@@ -851,6 +975,7 @@ html[data-theme='dark'] :is(.theme-default-content, .vp-page [vp-content]) :not(
 
   .home-layout {
     grid-template-areas:
+      'regulations'
       'intro'
       'author'
       'modules';
@@ -860,6 +985,16 @@ html[data-theme='dark'] :is(.theme-default-content, .vp-page [vp-content]) :not(
 
   .home-intro {
     min-height: auto;
+  }
+
+  .home-regulations-mini {
+    min-height: 17rem;
+  }
+
+  .home-regulations-mini .regulation-preview__rows {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
   }
 
   .author-profile {
