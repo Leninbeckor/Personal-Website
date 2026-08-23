@@ -50,8 +50,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build and validate
-        run: pnpm docs:build
+      - name: Check content
+        run: pnpm content:check
+
+      - name: Build VuePress site
+        run: pnpm exec vuepress build docs
+
+      - name: Validate build output
+        run: node scripts/postbuild.mjs
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
