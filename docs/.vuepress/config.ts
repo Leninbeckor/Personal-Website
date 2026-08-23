@@ -87,7 +87,6 @@ export default defineUserConfig({
       { text: '投资分析', link: '/investment-analysis/' },
       { text: '会计准则', link: '/accounting-standards/' },
       { text: 'DSH 开发实践', link: '/ai-finance/' },
-      { text: '上市公司法规', link: '/regulations/' },
       { text: '关于', link: '/about/' },
     ],
     sidebar: {
@@ -112,11 +111,11 @@ export default defineUserConfig({
           children: [''],
         },
       ],
-      '/regulations/': [
+      '/ai-finance/': [
         {
-          text: '上市公司法规库',
-          prefix: '/regulations/',
-          children: [''],
+          text: 'DSH 开发实践',
+          prefix: '/ai-finance/',
+          children: ['', 'deepseek-harness-architecture'],
         },
       ],
       '/guide/': [
