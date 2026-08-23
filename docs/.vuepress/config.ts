@@ -87,7 +87,6 @@ export default defineUserConfig({
       { text: '投资分析', link: '/investment-analysis/' },
       { text: '会计准则', link: '/accounting-standards/' },
       { text: 'DSH 开发实践', link: '/ai-finance/' },
-      { text: '关于', link: '/about/' },
     ],
     sidebar: {
       '/office-automation/': [

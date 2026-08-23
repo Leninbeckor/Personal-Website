@@ -39,8 +39,8 @@ const modules = [
 
 <template>
   <main class="vp-home custom-home">
-    <section class="home-intro" aria-labelledby="home-title">
-      <div class="home-intro__copy">
+    <div class="home-layout">
+      <section class="home-intro" aria-labelledby="home-title">
         <p class="home-eyebrow"><span aria-hidden="true"></span> PERSONAL KNOWLEDGE BASE</p>
         <h1 id="home-title">知识导航，<br /><em>万事通达</em></h1>
         <p class="home-lead">
@@ -51,7 +51,7 @@ const modules = [
           <span>持续更新</span>
           <span>长期复用</span>
         </div>
-      </div>
+      </section>
 
       <aside class="author-profile" aria-labelledby="author-name">
         <div class="author-profile__topline">
@@ -66,64 +66,79 @@ const modules = [
           </div>
         </div>
         <p class="author-profile__bio">
-          关注 AI 在日常办公、投资和财务领域的应用，研究它如何改善工作流程、辅助分析与决策。
+          你好，我是陈梓墨。我关注技术、财务与投资的交叉领域，希望把专业知识、实践经验和每日思考整理为可以长期积累、检索和复用的知识体系。
         </p>
-        <div class="author-profile__credentials" aria-label="专业资质">
-          <span>ACCA</span>
-          <span>CIA</span>
-          <span>CISA</span>
-          <span>CMA</span>
-          <span>税务师</span>
-        </div>
+
+        <section class="author-profile__section" aria-labelledby="credentials-title">
+          <h3 id="credentials-title">专业资质</h3>
+          <div class="author-profile__credentials">
+            <span>ACCA</span>
+            <span>CIA</span>
+            <span>CISA</span>
+            <span>CMA</span>
+            <span>税务师</span>
+          </div>
+        </section>
+
+        <section class="author-profile__section" aria-labelledby="research-title">
+          <h3 id="research-title">研究方向</h3>
+          <p>研究 AI 如何改善日常办公流程、辅助投资与财务分析决策，以及由此带来的风险和长期影响。</p>
+        </section>
+
+        <section class="author-profile__section" aria-labelledby="purpose-title">
+          <h3 id="purpose-title">关于这个知识库</h3>
+          <p>记录和整合每日所思所想，把零散经验逐步沉淀为结构化内容。</p>
+        </section>
+
         <blockquote>日拱一卒，功不唐捐。</blockquote>
       </aside>
-    </section>
 
-    <section class="knowledge-modules" aria-labelledby="modules-title">
-      <div class="section-heading">
-        <div>
-          <p>EXPLORE BY TOPIC</p>
-          <h2 id="modules-title">四个持续生长的主题</h2>
+      <section class="knowledge-modules" aria-labelledby="modules-title">
+        <div class="section-heading">
+          <div>
+            <p>EXPLORE BY TOPIC</p>
+            <h2 id="modules-title">四个持续生长的主题</h2>
+          </div>
+          <p>从实际问题出发，进入对应的知识模块。</p>
         </div>
-        <p>从实际问题出发，进入对应的知识模块。</p>
-      </div>
 
-      <div class="module-grid">
-        <a
-          v-for="item in modules"
-          :key="item.link"
-          :href="item.link"
-          class="module-card"
-          :aria-label="`进入${item.title}模块`"
-        >
-          <div class="module-card__meta">
-            <span>{{ item.index }}</span>
-            <span>{{ item.label }}</span>
-          </div>
-          <div class="module-card__icon" aria-hidden="true">
-            <svg v-if="item.icon === 'automation'" viewBox="0 0 32 32">
-              <rect x="5" y="7" width="22" height="18" rx="3" />
-              <path d="M10 12h12M10 17h7M10 22h10" />
-              <path d="m21 18 2 2 4-5" />
-            </svg>
-            <svg v-else-if="item.icon === 'investment'" viewBox="0 0 32 32">
-              <path d="M6 25V14M13 25V9M20 25V17M27 25V5" />
-              <path d="m5 12 8-5 7 7 7-9" />
-            </svg>
-            <svg v-else-if="item.icon === 'accounting'" viewBox="0 0 32 32">
-              <path d="M16 5v22M8 9h16M5 25h22" />
-              <path d="m8 9-4 8h8l-4-8Zm16 0-4 8h8l-4-8Z" />
-            </svg>
-            <svg v-else viewBox="0 0 32 32">
-              <path d="m11 9-7 7 7 7M21 9l7 7-7 7M19 5l-6 22" />
-            </svg>
-          </div>
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
-          <span class="module-card__link">进入模块 <i aria-hidden="true">→</i></span>
-        </a>
-      </div>
-    </section>
+        <div class="module-grid">
+          <a
+            v-for="item in modules"
+            :key="item.link"
+            :href="item.link"
+            class="module-card"
+            :aria-label="`进入${item.title}模块`"
+          >
+            <div class="module-card__meta">
+              <span>{{ item.index }}</span>
+              <span>{{ item.label }}</span>
+            </div>
+            <div class="module-card__icon" aria-hidden="true">
+              <svg v-if="item.icon === 'automation'" viewBox="0 0 32 32">
+                <rect x="5" y="7" width="22" height="18" rx="3" />
+                <path d="M10 12h12M10 17h7M10 22h10" />
+                <path d="m21 18 2 2 4-5" />
+              </svg>
+              <svg v-else-if="item.icon === 'investment'" viewBox="0 0 32 32">
+                <path d="M6 25V14M13 25V9M20 25V17M27 25V5" />
+                <path d="m5 12 8-5 7 7 7-9" />
+              </svg>
+              <svg v-else-if="item.icon === 'accounting'" viewBox="0 0 32 32">
+                <path d="M16 5v22M8 9h16M5 25h22" />
+                <path d="m8 9-4 8h8l-4-8Zm16 0-4 8h8l-4-8Z" />
+              </svg>
+              <svg v-else viewBox="0 0 32 32">
+                <path d="m11 9-7 7 7 7M21 9l7 7-7 7M19 5l-6 22" />
+              </svg>
+            </div>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            <span class="module-card__link">进入模块 <i aria-hidden="true">→</i></span>
+          </a>
+        </div>
+      </section>
+    </div>
 
     <footer class="site-footer" vp-footer>
       <SiteFooter />
