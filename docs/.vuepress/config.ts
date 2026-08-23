@@ -66,6 +66,7 @@ export default defineUserConfig({
   ],
   bundler: viteBundler(),
   alias: {
+    '@theme/VPHome.vue': path.resolve(__dirname, './components/HomePage.vue'),
     '@theme/VPHomeFooter.vue': path.resolve(__dirname, './components/SiteFooter.vue'),
   },
   theme: defaultTheme({
@@ -86,6 +87,7 @@ export default defineUserConfig({
       { text: '投资分析', link: '/investment-analysis/' },
       { text: '会计准则', link: '/accounting-standards/' },
       { text: 'DSH 开发实践', link: '/ai-finance/' },
+      { text: '上市公司法规', link: '/regulations/' },
       { text: '关于', link: '/about/' },
     ],
     sidebar: {
@@ -110,11 +112,11 @@ export default defineUserConfig({
           children: [''],
         },
       ],
-      '/ai-finance/': [
+      '/regulations/': [
         {
-          text: 'DSH 开发实践',
-          prefix: '/ai-finance/',
-          children: ['', 'deepseek-harness-architecture'],
+          text: '上市公司法规库',
+          prefix: '/regulations/',
+          children: [''],
         },
       ],
       '/guide/': [
