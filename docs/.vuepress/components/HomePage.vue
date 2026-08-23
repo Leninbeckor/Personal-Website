@@ -42,7 +42,7 @@ const modules = [
     <section class="home-intro" aria-labelledby="home-title">
       <div class="home-intro__copy">
         <p class="home-eyebrow"><span aria-hidden="true"></span> PERSONAL KNOWLEDGE BASE</p>
-        <h1 id="home-title">在技术、财务与<br />投资之间，<br /><em>建立可复用的认知。</em></h1>
+        <h1 id="home-title">知识导航，<br /><em>万事通达</em></h1>
         <p class="home-lead">
           记录真实项目中的方法、判断与复盘，把零散经验整理为可以长期积累、检索和应用的知识体系。
         </p>
