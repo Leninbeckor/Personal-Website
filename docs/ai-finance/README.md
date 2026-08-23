@@ -1,7 +1,6 @@
 ---
 title: DSH 开发实践
 description: 介绍 DeepSeek Harness 的插件化架构、运行方式与 DSH 开发实践
-sidebar: false
 date: 2026-08-02
 tags:
   - DSH

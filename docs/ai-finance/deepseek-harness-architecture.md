@@ -1,7 +1,6 @@
 ---
 title: DeepSeek Harness：不是一个应用，而是一种组装智能体的方法
 description: 从插件树、共享上下文与事件日志出发，理解 DeepSeek Harness 的整体结构，以及它给非专业开发者的启发
-sidebar: false
 date: 2026-08-23
 tags:
   - DSH
