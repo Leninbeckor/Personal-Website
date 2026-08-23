@@ -60,7 +60,7 @@ export default defineUserConfig({
   description: siteDescription,
   base: '/',
   head: [
-    ['meta', { name: 'theme-color', content: '#166c68' }],
+    ['meta', { name: 'theme-color', content: '#49b1f5' }],
     ['meta', { name: 'author', content: siteAuthor }],
     ['meta', { name: 'format-detection', content: 'telephone=no' }],
   ],
