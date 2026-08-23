@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">插件树与事件流</title>
+  <desc id="desc">插件树描述系统安装了什么，事件流描述任务运行中发生了什么。</desc>
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fbfe"/><stop offset="1" stop-color="#edf8f7"/></linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#49b1f5"/><stop offset="1" stop-color="#00c4b6"/></linearGradient>
+    <style>.sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}.title{font-size:25px;font-weight:750;fill:#17394b}.label{font-size:18px;font-weight:700;fill:#244c60}.body{font-size:16px;fill:#607e8e}.small{font-size:14px;letter-spacing:1.5px;fill:#168da2}.mono{font-family:Consolas,monospace;font-size:16px;fill:#25536a}</style>
+  </defs>
+  <rect width="1200" height="620" rx="26" fill="url(#bg2)"/>
+  <text x="60" y="64" class="sans small">TWO VIEWS OF THE SAME SYSTEM</text>
+  <text x="60" y="100" class="sans title">一张图说明“有什么”，另一张图说明“发生了什么”</text>
+  <line x1="600" y1="136" x2="600" y2="558" stroke="#c9dfe8"/>
+  <g class="sans">
+    <circle cx="82" cy="166" r="22" fill="#49b1f5"/><text x="82" y="173" text-anchor="middle" fill="white" font-size="19" font-weight="800">A</text>
+    <text x="118" y="174" class="title">插件树 / 系统的构成</text>
+    <rect x="100" y="236" width="400" height="60" rx="13" fill="#d9f4f1" stroke="#00aa9d"/><text x="300" y="273" text-anchor="middle" class="mono">临时 --patch overlay</text>
+    <rect x="125" y="307" width="350" height="60" rx="13" fill="#dceffd" stroke="#49b1f5"/><text x="300" y="344" text-anchor="middle" class="mono">用户 cordis.patch.yml</text>
+    <rect x="150" y="378" width="300" height="60" rx="13" fill="#e4ebff" stroke="#7f8cff"/><text x="300" y="415" text-anchor="middle" class="mono">web-app / headless</text>
+    <rect x="175" y="449" width="250" height="60" rx="13" fill="url(#bar)"/><text x="300" y="486" text-anchor="middle" fill="white" font-family="Consolas,monospace" font-size="18" font-weight="700">dsh-base</text>
+    <text x="300" y="548" text-anchor="middle" class="body">越靠上的层越接近个人需要，可以覆盖底层配置</text>
+  </g>
+  <g class="sans">
+    <circle cx="682" cy="166" r="22" fill="#00b9ad"/><text x="682" y="173" text-anchor="middle" fill="white" font-size="19" font-weight="800">B</text>
+    <text x="718" y="174" class="title">事件流 / 系统的经历</text>
+    <line x1="744" y1="232" x2="744" y2="505" stroke="#31b9c5" stroke-width="4"/>
+    <g>
+      <circle cx="744" cy="248" r="11" fill="#49b1f5"/><rect x="780" y="222" width="300" height="52" rx="11" fill="white" stroke="#c9dfe8"/><text x="808" y="254" class="mono">turn/start</text>
+      <circle cx="744" cy="310" r="11" fill="#42bdcf"/><rect x="780" y="284" width="300" height="52" rx="11" fill="white" stroke="#c9dfe8"/><text x="808" y="316" class="mono">agent/pre-step</text>
+      <circle cx="744" cy="372" r="11" fill="#28c6c5"/><rect x="780" y="346" width="300" height="52" rx="11" fill="white" stroke="#c9dfe8"/><text x="808" y="378" class="mono">llm/stream</text>
+      <circle cx="744" cy="434" r="11" fill="#14b7a8"/><rect x="780" y="408" width="300" height="52" rx="11" fill="white" stroke="#c9dfe8"/><text x="808" y="440" class="mono">tool/call → result</text>
+      <circle cx="744" cy="496" r="11" fill="#078e82"/><rect x="780" y="470" width="300" height="52" rx="11" fill="white" stroke="#c9dfe8"/><text x="808" y="502" class="mono">turn/end</text>
+    </g>
+    <text x="880" y="558" text-anchor="middle" class="body">回放、恢复与界面渲染都从同一事件流派生</text>
+  </g>
+</svg>

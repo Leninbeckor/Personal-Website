@@ -114,7 +114,7 @@ export default defineUserConfig({
         {
           text: 'DSH 开发实践',
           prefix: '/ai-finance/',
-          children: [''],
+          children: ['', 'deepseek-harness-architecture'],
         },
       ],
       '/guide/': [
