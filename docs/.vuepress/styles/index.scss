@@ -353,9 +353,10 @@ html[data-theme='dark'] .custom-home {
 }
 
 .author-profile {
-  position: sticky;
-  top: 6rem;
+  position: relative;
+  top: auto;
   grid-area: author;
+  align-self: stretch;
   width: 100%;
   min-height: var(--home-side-card-height);
   margin: 0;
@@ -651,6 +652,7 @@ html[data-theme='dark'] .custom-home {
 
 .home-regulations-mini {
   grid-area: regulations;
+  align-self: stretch;
   min-height: var(--home-side-card-height);
   padding: 1.25rem;
 }
@@ -977,11 +979,10 @@ html[data-theme='dark'] :is(.theme-default-content, .vp-page [vp-content]) :not(
 
   .home-layout {
     grid-template-areas:
-      'regulations'
-      'intro'
-      'author'
-      'modules';
-    grid-template-columns: minmax(0, 1fr);
+      'regulations author'
+      'intro intro'
+      'modules modules';
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem;
   }
 
@@ -1015,6 +1016,15 @@ html[data-theme='dark'] :is(.theme-default-content, .vp-page [vp-content]) :not(
   .vp-home {
     padding-top: 2.5rem;
     padding-inline: 1rem;
+  }
+
+  .home-layout {
+    grid-template-areas:
+      'regulations'
+      'author'
+      'intro'
+      'modules';
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .home-intro {
