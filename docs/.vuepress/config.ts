@@ -20,7 +20,7 @@ const normalizeHost = (value: string): string => value.replace(/\/+$/, '')
 const siteHost = normalizeHost(process.env.SITE_HOST || 'https://www.example.com')
 const siteTitle = process.env.SITE_TITLE || '陈梓墨的技术知识库'
 const siteDescription =
-  process.env.SITE_DESCRIPTION || '聚焦自动化办公、投资分析、会计准则与 AI 财务实践的个人知识库'
+  process.env.SITE_DESCRIPTION || '聚焦自动化办公、投资分析、会计准则与 DSH 开发实践的个人知识库'
 const siteAuthor = process.env.SITE_AUTHOR || '陈梓墨'
 const repositoryUrl =
   process.env.GITHUB_REPOSITORY_URL || 'https://github.com/Leninbeckor/Personal-Website'
@@ -85,7 +85,7 @@ export default defineUserConfig({
       { text: '办公自动化', link: '/office-automation/' },
       { text: '投资分析', link: '/investment-analysis/' },
       { text: '会计准则', link: '/accounting-standards/' },
-      { text: 'AI 财务', link: '/ai-finance/' },
+      { text: 'DSH 开发实践', link: '/ai-finance/' },
       { text: '关于', link: '/about/' },
     ],
     sidebar: {
@@ -112,7 +112,7 @@ export default defineUserConfig({
       ],
       '/ai-finance/': [
         {
-          text: 'AI 财务实践及影响',
+          text: 'DSH 开发实践',
           prefix: '/ai-finance/',
           children: [''],
         },
