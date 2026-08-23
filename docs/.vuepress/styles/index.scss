@@ -21,7 +21,7 @@
     "PingFang SC", "Microsoft YaHei", sans-serif;
   --vp-font-mono: Consolas, Menlo, Monaco, "PingFang SC", "Microsoft YaHei", monospace;
   --content-width: 860px;
-  --homepage-width: 1180px;
+  --homepage-width: 1600px;
   scroll-behavior: smooth;
 }
 
@@ -125,7 +125,9 @@ a {
 
 /* Butterfly-style homepage: airy hero followed by floating cards. */
 .vp-home {
+  width: 100%;
   max-width: var(--homepage-width);
+  margin-inline: auto;
   padding-top: 5rem;
   padding-bottom: 1rem;
 }
@@ -268,7 +270,7 @@ html[data-theme='dark'] .custom-home {
   grid-template-areas:
     'intro author'
     'modules author';
-  grid-template-columns: minmax(0, 1fr) 330px;
+  grid-template-columns: minmax(0, 1fr) clamp(330px, 22vw, 360px);
   gap: 0 1.5rem;
   align-items: start;
 }
